@@ -3,8 +3,8 @@ object FrmLogin: TFrmLogin
   Top = 0
   BorderStyle = bsNone
   Caption = 'Login'
-  ClientHeight = 403
-  ClientWidth = 820
+  ClientHeight = 170
+  ClientWidth = 321
   Color = clWhite
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -16,41 +16,41 @@ object FrmLogin: TFrmLogin
   OnShow = FormShow
   TextHeight = 15
   object Label1: TLabel
-    Left = 449
-    Top = 110
-    Width = 153
-    Height = 17
+    Left = 143
+    Top = 43
+    Width = 80
+    Height = 10
     Caption = 'C'#211'DIGO DO OPERADOR:'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clGray
-    Font.Height = -13
+    Font.Height = -7
     Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
   end
   object Label2: TLabel
-    Left = 449
-    Top = 176
-    Width = 47
-    Height = 17
+    Left = 143
+    Top = 88
+    Width = 26
+    Height = 10
     Caption = 'SENHA:'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clGray
-    Font.Height = -13
+    Font.Height = -7
     Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
   end
   object Label7: TLabel
-    Left = 449
-    Top = 22
-    Width = 350
-    Height = 25
+    Left = 143
+    Top = 20
+    Width = 128
+    Height = 10
     Alignment = taCenter
     Caption = 'Digite seu C'#243'digo de Operador e Senha'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clGray
-    Font.Height = -19
+    Font.Height = -7
     Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
@@ -58,8 +58,8 @@ object FrmLogin: TFrmLogin
   object Panel1: TPanel
     Left = 8
     Top = 8
-    Width = 417
-    Height = 383
+    Width = 129
+    Height = 154
     Caption = 'PLogin'
     Color = clDarkgray
     Ctl3D = True
@@ -68,24 +68,24 @@ object FrmLogin: TFrmLogin
     ShowCaption = False
     TabOrder = 4
     object Label3: TLabel
-      Left = 34
-      Top = 22
-      Width = 363
-      Height = 25
+      Left = 18
+      Top = 15
+      Width = 95
+      Height = 6
       Alignment = taCenter
       Caption = 'Bem-Vindos ao Monitoramento de Caixa'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clGray
-      Font.Height = -19
+      Font.Height = -5
       Font.Name = 'Segoe UI'
       Font.Style = [fsBold]
       ParentFont = False
     end
     object ILogo: TImage
       Left = 10
-      Top = 58
-      Width = 400
-      Height = 162
+      Top = 27
+      Width = 109
+      Height = 71
       Picture.Data = {
         0954506E67496D61676589504E470D0A1A0A0000000D49484452000001900000
         00A208060000006F7A9BDE0000000467414D410000B18E7CFB519300000A2F69
@@ -760,62 +760,63 @@ object FrmLogin: TFrmLogin
         DF91D77B47FEF78E74F2645F50F6850FFB327A08A810FB1A24E12539EEA5200A
         91E4655E9A4CE24B10CD91106D8A0413F9DFFE5F5E48583C84C37150FE0F3B05
         23B79C8C21210000000049454E44AE426082}
+      Stretch = True
     end
     object Label4: TLabel
-      Left = 169
-      Top = 226
-      Width = 77
-      Height = 21
+      Left = 51
+      Top = 101
+      Width = 24
+      Height = 6
       Alignment = taCenter
       Caption = 'Vers'#227'o 1.0'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clGray
-      Font.Height = -16
+      Font.Height = -5
       Font.Name = 'Segoe UI'
       Font.Style = [fsBold]
       ParentFont = False
     end
     object Label5: TLabel
-      Left = 65
-      Top = 335
-      Width = 302
-      Height = 17
+      Left = 19
+      Top = 129
+      Width = 94
+      Height = 5
       Alignment = taCenter
       Caption = 'DESENVOLVIDO POR TORTUGA C'#194'MARAS DE AR'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clGray
-      Font.Height = -13
+      Font.Height = -4
       Font.Name = 'Segoe UI'
       Font.Style = [fsBold]
       ParentFont = False
     end
     object Label6: TLabel
-      Left = 105
-      Top = 358
-      Width = 213
-      Height = 17
+      Left = 34
+      Top = 138
+      Width = 64
+      Height = 5
       Alignment = taCenter
       Caption = 'TODOS OS DIREITOS RESERVADOS'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clGray
-      Font.Height = -13
+      Font.Height = -4
       Font.Name = 'Segoe UI'
       Font.Style = [fsBold]
       ParentFont = False
     end
   end
   object ECodOpe: TEdit
-    Left = 449
-    Top = 133
-    Width = 350
+    Left = 143
+    Top = 59
+    Width = 171
     Height = 23
     TabOrder = 0
     StyleElements = [seFont, seClient]
   end
   object MESenha: TMaskEdit
-    Left = 449
-    Top = 199
-    Width = 350
+    Left = 143
+    Top = 104
+    Width = 171
     Height = 23
     PasswordChar = '*'
     TabOrder = 1
@@ -823,10 +824,10 @@ object FrmLogin: TFrmLogin
     StyleElements = [seFont, seClient]
   end
   object BBLogin: TBitBtn
-    Left = 449
-    Top = 254
-    Width = 136
-    Height = 57
+    Left = 143
+    Top = 133
+    Width = 83
+    Height = 28
     Caption = '&Login'
     Glyph.Data = {
       F6060000424DF606000000000000360000002800000018000000180000000100
@@ -889,10 +890,10 @@ object FrmLogin: TFrmLogin
     OnClick = BBLoginClick
   end
   object BBCancelar: TBitBtn
-    Left = 663
-    Top = 254
-    Width = 136
-    Height = 57
+    Left = 232
+    Top = 133
+    Width = 82
+    Height = 28
     Caption = '&Cancelar'
     Glyph.Data = {
       F6060000424DF606000000000000360000002800000018000000180000000100
@@ -972,14 +973,14 @@ object FrmLogin: TFrmLogin
       'Multiple Transaction=False'
       'Trim Char=False'
       'Decimal Separator=.')
-    Left = 544
-    Top = 344
+    Left = 104
+    Top = 152
   end
   object SQLQLogin: TSQLQuery
     MaxBlobSize = -1
     Params = <>
     SQLConnection = SQLCLogin
-    Left = 624
-    Top = 344
+    Left = 32
+    Top = 152
   end
 end
