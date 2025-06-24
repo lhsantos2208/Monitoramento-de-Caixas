@@ -504,8 +504,6 @@ begin
 end;
 
 procedure TFrmMonCai.FormClose(Sender: TObject; var Action: TCloseAction);
-var
-  testegit: String;
 begin
   SQLCMonCai.Connected:= False;
   Application.Terminate;
