@@ -1,0 +1,36 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{50A61327-0CA3-46CA-83CA-543B4E0AD694}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="PrjMonCai.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="PrjMonCai">
+        <MSBuild Projects="PrjMonCai.dproj"/>
+    </Target>
+    <Target Name="PrjMonCai:Clean">
+        <MSBuild Projects="PrjMonCai.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="PrjMonCai:Make">
+        <MSBuild Projects="PrjMonCai.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="PrjMonCai"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="PrjMonCai:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="PrjMonCai:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
