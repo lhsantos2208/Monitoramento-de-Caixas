@@ -32,12 +32,16 @@ type
     IdMessage: TIdMessage;
     IdSSLIOHandlerSocketOpenSSL: TIdSSLIOHandlerSocketOpenSSL;
     SBLimpar: TSpeedButton;
+    LCont: TLabel;
+    BBReiPro: TBitBtn;
+    SQLQReiPro: TSQLQuery;
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure BBSairClick(Sender: TObject);
     procedure BBEnvRelClick(Sender: TObject);
     procedure ECodBarKeyPress(Sender: TObject; var Key: Char);
     procedure SBLimparClick(Sender: TObject);
+    procedure BBReiProClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -51,6 +55,7 @@ var
   vaCodOri: String;
   vnNumOrp: Integer;
   vaMsg: String;
+  vnCont: Integer;
 
 implementation
 
@@ -64,6 +69,8 @@ begin
   SQLCMonCai.Connected:= True;
   SBPrincipal.Panels[1].Text:= IntToStr(UVarUni.TClass.vnNumCad);
   SBPrincipal.Panels[3].Text:= UVarUni.TClass.vaNomOpe;
+  LCont.Caption:= '0';
+  vnCont:= 0;
 end;
 
 procedure TFrmMonCai.SBLimparClick(Sender: TObject);
@@ -221,6 +228,7 @@ begin
               SQLQMonCai.ParamByName('pUsuSai').AsInteger:= UVarUni.TClass.vnNumCad;
               SQLQMonCai.ParamByName('pCxaEnv').AsString := 'N';
               SQLQMonCai.ExecSQL();
+              vnCont:= vnCont + 1;
               {vaMsg:= 'Registro de Saída de Caixa ' + Char(13) + 'realizado com Sucesso!';
               MessageDlg(vaMsg, mtInformation, [mbOk], 0);}
 
@@ -269,6 +277,7 @@ begin
 
               ECodBar.Clear;
               ECodBar.SetFocus;
+              LCont.Caption:= IntToStr(vnCont);
             end
             else begin
               vaMsg:= 'Já Existe Saída para a Caixa!';
@@ -308,6 +317,7 @@ begin
               SQLQMonCai.ParamByName('pUsuEnt').AsInteger:= UVarUni.TClass.vnNumCad;
               SQLQMonCai.ParamByName('pCxaRec').AsString := 'N';
               SQLQMonCai.ExecSQL();
+              vnCont:= vnCont + 1;
               {vaMsg:= 'Registro de Entrada de ' + Char(13) + 'Caixa Realizado com Sucesso!';
               MessageDlg(vaMsg, mtInformation, [mbOk], 0);}
 
@@ -356,6 +366,7 @@ begin
 
               ECodBar.Clear;
               ECodBar.SetFocus;
+              LCont.Caption:= IntToStr(vnCont);
             end
             else begin
               vaMsg:= 'Já Existe Entrada para a Caixa!';
@@ -475,7 +486,7 @@ begin
                  SQLQEmail.FieldByName('USU_DATSAI').AsString + '   ' +
                  SQLQEmail.FieldByName('USU_HORSAI').AsString + '             ' +
                  IntToStr(SQLQEmail.FieldByName('USU_USUSAI').AsInteger) + ' - ' +
-                 SQLQEmail.FieldByName('NOMOPE').AsString + Char(13)
+                 UpperCase(SQLQEmail.FieldByName('NOMOPE').AsString) + Char(13)
     else
       vaCaixas:= vaCaixas + IntToStr(SQLQEmail.FieldByName('USU_CODEMP').AsInteger) + '              ' +
                  IntToStr(SQLQEmail.FieldByName('USU_CODFIL').AsInteger) + '         ' +
@@ -489,7 +500,7 @@ begin
                  SQLQEmail.FieldByName('USU_DATENT').AsString + '       ' +
                  SQLQEmail.FieldByName('USU_HORENT').AsString + '                   ' +
                  IntToStr(SQLQEmail.FieldByName('USU_USUENT').AsInteger) + ' - ' +
-                 SQLQEmail.FieldByName('NOMOPE').AsString + Char(13);
+                 UpperCase(SQLQEmail.FieldByName('NOMOPE').AsString) + Char(13);
     SQLQEmail.Next;
   end;
   SQLQEmail.Close;
@@ -540,6 +551,8 @@ begin
       IdSMTP.Free;
       LVGrid.Columns.Clear;
       LVGrid.Items.Clear;
+      vnCont:= 0;
+      LCont.Caption:= '0';
     end;
   end
   else begin
@@ -547,6 +560,106 @@ begin
     MessageDlg(vaMsg, mtError, [mbOk], 0);
   end;
   BBEnvRel.Enabled:= True;
+end;
+
+procedure TFrmMonCai.BBReiProClick(Sender: TObject);
+begin
+{  if vnCodEmp = 0 then
+    vnCodEmp:= 1;
+  SQLQMonCai.SQL.Clear;
+  if (UVarUni.TClass.vaPodSai = 'S') then
+  begin
+    SQLQMonCai.SQL.Add('SELECT USU_CODEMP, ' +
+                       '       USU_CODFIL, ' +
+                       '       USU_CODORI, ' +
+                       '       USU_NUMORP, ' +
+                       '       USU_NUMCXA, ' +
+                       '       USU_DATSAI, ' +
+                       '       USU_USUSAI, ' +
+                       '       USU_CXAENV ' +
+                       '  FROM USU_TMONCAI ' +
+                       ' WHERE USU_CODEMP = :pCodEmp ' +
+                       '   AND USU_DATSAI = :pDatSai ' +
+                       '   AND USU_USUSAI = :pUsuSai');
+    SQLQMonCai.ParamByName('pCodEmp').AsInteger:= vnCodEmp;
+    SQLQMonCai.ParamByName('pDatSai').AsString := FormatDateTime('DD/MM/YYYY', Now);
+    SQLQMonCai.ParamByName('pUsuSai').AsInteger:= UVarUni.TClass.vnNumCad;
+    SQLQMonCai.ExecSQL();
+    SQLQMonCai.Active:= True;
+
+    SQLQReiPro.SQL.Clear;
+    if Not SQLQMonCai.Eof then
+    begin
+      if SQLQMonCai.FieldByName('USU_CXAENV').AsString <> 'S' then
+      begin
+        SQLQReiPro.SQL.Add('DELETE USU_TMONCAI ' +
+                           ' WHERE USU_CODEMP = :pCodEmp ' +
+                           '   AND USU_DATSAI = :pDatSai ' +
+                           '   AND USU_USUSAI = :pUsuSai');
+        SQLQReiPro.ParamByName('pCodEmp').AsInteger:= vnCodEmp;
+        SQLQReiPro.ParamByName('pDatSai').AsString := FormatDateTime('DD/MM/YYYY', Now);
+        SQLQReiPro.ParamByName('pUsuSai').AsInteger:= UVarUni.TClass.vnNumCad;
+        SQLQReiPro.ExecSQL();
+        SQLQReiPro.Close;
+        LVGrid.Columns.Clear;
+        LVGrid.Items.Clear;
+        vnCont:= 0;
+        LCont.Caption:= '0';
+        ECodBar.SetFocus;
+      end
+      else begin
+        vaMsg:= 'Caixas estão marcadas como enviadas, ' + Char(13) + 'processo não pode ser reiniciado!';
+        MessageDlg(vaMsg, mtError, [mbOk], 0);
+      end;
+    end;
+    SQLQMonCai.Close;
+  end
+  else begin
+    SQLQMonCai.SQL.Add('SELECT USU_CODEMP, ' +
+                       '       USU_CODFIL, ' +
+                       '       USU_CODORI, ' +
+                       '       USU_NUMORP, ' +
+                       '       USU_NUMCXA, ' +
+                       '       USU_DATSAI, ' +
+                       '       USU_USUSAI, ' +
+                       '       USU_CXAREC ' +
+                       '  FROM USU_TMONCAI ' +
+                       ' WHERE USU_CODEMP = :pCodEmp ' +
+                       '   AND USU_DATENT = :pDatEnt ' +
+                       '   AND USU_USUENT = :pUsuEnt');
+    SQLQMonCai.ParamByName('pCodEmp').AsInteger:= vnCodEmp;
+    SQLQMonCai.ParamByName('pDatEnt').AsString := FormatDateTime('DD/MM/YYYY', Now);
+    SQLQMonCai.ParamByName('pUsuEnt').AsInteger:= UVarUni.TClass.vnNumCad;
+    SQLQMonCai.ExecSQL();
+    SQLQMonCai.Active:= True;
+
+    SQLQReiPro.SQL.Clear;
+    if Not SQLQMonCai.Eof then
+    begin
+      if SQLQMonCai.FieldByName('USU_CXAREC').AsString <> 'S' then
+      begin
+        SQLQReiPro.SQL.Add('DELETE USU_TMONCAI ' +
+                           ' WHERE USU_CODEMP = :pCodEmp ' +
+                           '   AND USU_DATENT = :pDatEnt ' +
+                           '   AND USU_USUENT = :pUsuEnt');
+        SQLQReiPro.ParamByName('pCodEmp').AsInteger:= vnCodEmp;
+        SQLQReiPro.ParamByName('pDatEnt').AsString := FormatDateTime('DD/MM/YYYY', Now);
+        SQLQReiPro.ParamByName('pUsuEnt').AsInteger:= UVarUni.TClass.vnNumCad;
+        SQLQReiPro.ExecSQL();
+        SQLQReiPro.Close;
+        LVGrid.Columns.Clear;
+        LVGrid.Items.Clear;
+        vnCont:= 0;
+        LCont.Caption:= '0';
+        ECodBar.SetFocus;
+      end
+      else begin
+        vaMsg:= 'Caixas estão marcadas como recebidas, ' + Char(13) + 'processo não pode ser reiniciado!';
+        MessageDlg(vaMsg, mtError, [mbOk], 0);
+      end;
+    end;
+    SQLQMonCai.Close;
+  end;   }
 end;
 
 procedure TFrmMonCai.BBSairClick(Sender: TObject);
