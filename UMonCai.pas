@@ -414,11 +414,15 @@ begin
                       '       USU_DATSAI, ' +
                       '       USU_HORSAI, ' +
                       '       USU_USUSAI, ' +
-                      '       E906OPE.NOMOPE ' +
+                      '       E906OPE.NOMOPE, ' +
+                      '       E075PRO.DESPRO ' +
                       '  FROM USU_TMONCAI, ' +
-                      '       E906OPE ' +
+                      '       E906OPE, ' +
+                      '       E075PRO ' +
                       ' WHERE USU_TMONCAI.USU_CODEMP = E906OPE.CODEMP ' +
                       '   AND USU_TMONCAI.USU_USUSAI = E906OPE.NUMCAD ' +
+                      '   AND USU_TMONCAI.USU_CODEMP = E075PRO.CODEMP ' +
+                      '   AND USU_TMONCAI.USU_CODPRO = E075PRO.CODPRO ' +
                       '   AND USU_CODEMP = :pCodEmp ' +
                       '   AND USU_DATSAI = :pDatSai ' +
                       '   AND USU_USUSAI = :pUsuSai ' +
@@ -430,7 +434,8 @@ begin
                       '         USU_PERPRO, ' +
                       '         USU_NUMCXA');
     vaTexto:= 'Caixas enviadas: ' + Char(13) + Char(13) +
-              'EMPRESA FILIAL ORIGEM ORDEM PRD. PERÍODO PRD. PRODUTO             DERIVAÇÃO CAIXA MINI FABRICA DATA SAÍDA HORA SAÍDA OPERADOR SAÍDA';
+              'EMPRESA FILIAL ORIGEM ORDEM PRD. PERÍODO PRD. PRODUTO                                                              ' +
+              '                          DERIVAÇÃO CAIXA MINI FABRICA DATA SAÍDA HORA SAÍDA OPERADOR SAÍDA';
   end
   else
   begin
@@ -446,11 +451,15 @@ begin
                       '       USU_DATENT, ' +
                       '       USU_HORENT, ' +
                       '       USU_USUENT, ' +
-                      '       E906OPE.NOMOPE ' +
+                      '       E906OPE.NOMOPE, ' +
+                      '       E075PRO.DESPRO ' +
                       '  FROM USU_TMONCAI, ' +
-                      '       E906OPE ' +
+                      '       E906OPE, ' +
+                      '       E075PRO ' +
                       ' WHERE USU_TMONCAI.USU_CODEMP = E906OPE.CODEMP ' +
                       '   AND USU_TMONCAI.USU_USUENT = E906OPE.NUMCAD ' +
+                      '   AND USU_TMONCAI.USU_CODEMP = E075PRO.CODEMP ' +
+                      '   AND USU_TMONCAI.USU_CODPRO = E075PRO.CODPRO ' +
                       '   AND USU_CODEMP = :pCodEmp ' +
                       '   AND USU_DATENT = :pDatSai ' +
                       '   AND USU_USUENT = :pUsuSai ' +
@@ -462,7 +471,8 @@ begin
                       '         USU_PERPRO, ' +
                       '         USU_NUMCXA');
     vaTexto:= 'Caixas Recebidas: ' + Char(13) + Char(13) +
-              'EMPRESA FILIAL ORIGEM ORDEM PRD. PERÍODO PRD. PRODUTO             DERIVAÇÃO CAIXA MINI FABRICA DATA ENTRADA HORA ENTRADA OPERADOR ENTRADA';
+              'EMPRESA FILIAL ORIGEM ORDEM PRD. PERÍODO PRD. PRODUTO                                                                ' +
+              '                          DERIVAÇÃO CAIXA MINI FABRICA DATA ENTRADA HORA ENTRADA OPERADOR ENTRADA';
   end;
   SQLQEmail.ParamByName('pCodEmp').AsInteger:= vnCodEmp;
   SQLQEmail.Params.ParamByName('pDatSai').AsString := FormatDateTime('DD/MM/YYYY', Now);
@@ -479,7 +489,8 @@ begin
                  SQLQEmail.FieldByName('USU_CODORI').AsString + '          ' +
                  IntToStr(SQLQEmail.FieldByName('USU_NUMORP').AsInteger) + '              ' +
                  IntToStr(SQLQEmail.FieldByName('USU_PERPRO').AsInteger) + '            ' +
-                 SQLQEmail.FieldByName('USU_CODPRO').AsString + '  ' +
+                 SQLQEmail.FieldByName('USU_CODPRO').AsString + ' - ' +
+                 SQLQEmail.FieldByName('DESPRO').AsString + '                 ' +
                  SQLQEmail.FieldByName('USU_CODDER').AsString + '             ' +
                  IntToStr(SQLQEmail.FieldByName('USU_NUMCXA').AsInteger) + '         ' +
                  IntToStr(SQLQEmail.FieldByName('USU_CODMNF').AsInteger) + '                     ' +
@@ -493,7 +504,8 @@ begin
                  SQLQEmail.FieldByName('USU_CODORI').AsString + '          ' +
                  IntToStr(SQLQEmail.FieldByName('USU_NUMORP').AsInteger) + '              ' +
                  IntToStr(SQLQEmail.FieldByName('USU_PERPRO').AsInteger) + '            ' +
-                 SQLQEmail.FieldByName('USU_CODPRO').AsString + '  ' +
+                 SQLQEmail.FieldByName('USU_CODPRO').AsString + ' - ' +
+                 SQLQEmail.FieldByName('DESPRO').AsString + '                 ' +
                  SQLQEmail.FieldByName('USU_CODDER').AsString + '             ' +
                  IntToStr(SQLQEmail.FieldByName('USU_NUMCXA').AsInteger) + '         ' +
                  IntToStr(SQLQEmail.FieldByName('USU_CODMNF').AsInteger) + '                     ' +

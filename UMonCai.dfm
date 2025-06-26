@@ -288,8 +288,8 @@ object FrmMonCai: TFrmMonCai
     OnClick = BBSairClick
   end
   object BBReiPro: TBitBtn
-    Left = 244
-    Top = 157
+    Left = 332
+    Top = 141
     Width = 84
     Height = 34
     Hint = 'Reiniciar processo'
