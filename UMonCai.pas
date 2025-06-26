@@ -531,7 +531,7 @@ begin
       else
         IdMessage.Subject:= 'Caixas Recebidas no Portão - ' + FormatDateTime('DD/MM/YYYY HH:MM', Now);
       IdMessage.ContentType:= 'multipart/mixed';
-      IdMessage.Recipients.EMailAddresses:= 'luciano.santos@tortugaonline.com.br';
+      IdMessage.Recipients.EMailAddresses:= 'monitoramento.caixa@tortugaonline.com.br';
       IdMessage.Body.Text:= vaTexto + Char(13) + vaCaixas;
 
       if not IdSMTP.Connected then
