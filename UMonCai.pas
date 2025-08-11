@@ -71,6 +71,8 @@ begin
   SBPrincipal.Panels[3].Text:= UVarUni.TClass.vaNomOpe;
   LCont.Caption:= '0';
   vnCont:= 0;
+  UVarUni.TClass.vaPodSai:= 'S';
+  UVarUni.TClass.vaPodEnt:= 'S';
 end;
 
 procedure TFrmMonCai.SBLimparClick(Sender: TObject);
