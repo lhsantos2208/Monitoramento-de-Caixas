@@ -363,9 +363,9 @@ object FrmMonCai: TFrmMonCai
     LoginPrompt = False
     Params.Strings = (
       'DriverName=Oracle'
-      'DataBase=ODA_HOMOL'
+      'DataBase=tortuga_novo'
       'User_Name=co_tortuga'
-      'Password=cohomol*9)'
+      'Password=choloepus'
       'RowsetSize=20'
       'BlobSize=-1'
       'ErrorResourceFile='
