@@ -71,8 +71,9 @@ begin
   SBPrincipal.Panels[3].Text:= UVarUni.TClass.vaNomOpe;
   LCont.Caption:= '0';
   vnCont:= 0;
-  UVarUni.TClass.vaPodSai:= 'S';
-  UVarUni.TClass.vaPodEnt:= 'S';
+  //UVarUni.TClass.vaPodSai:= 'S';
+ // UVarUni.TClass.vaPodEnt:= 'S';
+
 end;
 
 procedure TFrmMonCai.SBLimparClick(Sender: TObject);
@@ -397,6 +398,9 @@ procedure TFrmMonCai.BBEnvRelClick(Sender: TObject);
 var
   vaTexto: String;
   vaCaixas: String;
+  vaDesPro: String;
+  vaEspaco: String;
+  vnTam: Integer;
 begin
   if vnCodEmp = 0 then
     vnCodEmp:= 1;
@@ -485,6 +489,15 @@ begin
   vaCaixas:= '';
   while Not(SQLQEmail.Eof) do
   begin
+    vaDesPro:= SQLQEmail.FieldByName('DESPRO').AsString;
+    vnTam:= Length(vaDesPro);
+    While vnTam <= 44 do
+    begin
+      vaEspaco:= vaEspaco + ' ';
+      vnTam:= vnTam + 1;
+    end;
+    vaDesPro:= SQLQEmail.FieldByName('DESPRO').AsString + vaEspaco;
+
     if (UVarUni.TClass.vaPodSai = 'S') then
       vaCaixas:= vaCaixas + IntToStr(SQLQEmail.FieldByName('USU_CODEMP').AsInteger) + '              ' +
                  IntToStr(SQLQEmail.FieldByName('USU_CODFIL').AsInteger) + '         ' +
@@ -492,7 +505,7 @@ begin
                  IntToStr(SQLQEmail.FieldByName('USU_NUMORP').AsInteger) + '              ' +
                  IntToStr(SQLQEmail.FieldByName('USU_PERPRO').AsInteger) + '            ' +
                  SQLQEmail.FieldByName('USU_CODPRO').AsString + ' - ' +
-                 SQLQEmail.FieldByName('DESPRO').AsString + '                 ' +
+                 vaDesPro +
                  SQLQEmail.FieldByName('USU_CODDER').AsString + '             ' +
                  IntToStr(SQLQEmail.FieldByName('USU_NUMCXA').AsInteger) + '         ' +
                  IntToStr(SQLQEmail.FieldByName('USU_CODMNF').AsInteger) + '                     ' +
@@ -507,7 +520,7 @@ begin
                  IntToStr(SQLQEmail.FieldByName('USU_NUMORP').AsInteger) + '              ' +
                  IntToStr(SQLQEmail.FieldByName('USU_PERPRO').AsInteger) + '            ' +
                  SQLQEmail.FieldByName('USU_CODPRO').AsString + ' - ' +
-                 SQLQEmail.FieldByName('DESPRO').AsString + '                 ' +
+                 vaDesPro +
                  SQLQEmail.FieldByName('USU_CODDER').AsString + '             ' +
                  IntToStr(SQLQEmail.FieldByName('USU_NUMCXA').AsInteger) + '         ' +
                  IntToStr(SQLQEmail.FieldByName('USU_CODMNF').AsInteger) + '                     ' +

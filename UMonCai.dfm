@@ -133,8 +133,6 @@ object FrmMonCai: TFrmMonCai
         Text = 'Texto'
         Width = 50
       end>
-    ExplicitTop = 272
-    ExplicitWidth = 326
   end
   object LVGrid: TListView
     Left = 8
@@ -142,7 +140,6 @@ object FrmMonCai: TFrmMonCai
     Width = 281
     Height = 180
     Columns = <>
-    Items.ItemData = {050000000000000000}
     ReadOnly = True
     TabOrder = 2
   end
