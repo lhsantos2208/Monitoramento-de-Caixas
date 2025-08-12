@@ -231,33 +231,35 @@ begin
               SQLQMonCai.ParamByName('pUsuSai').AsInteger:= UVarUni.TClass.vnNumCad;
               SQLQMonCai.ParamByName('pCxaEnv').AsString := 'N';
               SQLQMonCai.ExecSQL();
-              vnCont:= vnCont + 1;
-              {vaMsg:= 'Registro de Saída de Caixa ' + Char(13) + 'realizado com Sucesso!';
-              MessageDlg(vaMsg, mtInformation, [mbOk], 0);}
 
               LVGrid.ViewStyle := vsReport;
-              SQLDSGrid.CommandText:= 'SELECT USU_CODEMP AS "EMPRESA", ' +
-                                      '       USU_CODFIL AS "FILIAL", ' +
-                                      '       USU_CODORI AS "ORIGEM", ' +
-                                      '       USU_NUMORP AS "ORDEM PROD.", ' +
-                                      '       USU_PERPRO AS "PERÍODO PROD.", ' +
+              SQLDSGrid.CommandText:= 'SELECT USU_NUMCXA AS "CAIXA", ' +
+                                      '       DESPRO AS "DESCRIÇÃO PROD.",' +
                                       '       USU_CODPRO AS "PRODUTO", ' +
                                       '       USU_CODDER AS "DERIVAÇÃO", ' +
-                                      '       USU_NUMCXA AS "CAIXA", ' +
+                                      '       USU_PERPRO AS "PERÍODO PROD.", ' +
                                       '       USU_CODMNF AS "MINI FABRICA", ' +
                                       '       USU_DATSAI AS "DATA SAÍDA", ' +
                                       '       USU_HORSAI AS "HORA SAÍDA", ' +
-                                      '       USU_USUSAI AS "USUÁRIO SAÍDA"' +
-                                      '  FROM USU_TMONCAI ' +
-                                      ' WHERE USU_CODEMP = :pCodEmp ' +
+                                      '       USU_USUSAI AS "USUÁRIO SAÍDA", ' +
+                                      '       USU_CODEMP AS "EMPRESA", ' +
+                                      '       USU_CODFIL AS "FILIAL", ' +
+                                      '       USU_CODORI AS "ORIGEM", ' +
+                                      '       USU_NUMORP AS "ORDEM PROD." ' +
+                                      '  FROM USU_TMONCAI, ' +
+                                      '       E075PRO ' +
+                                      ' WHERE USU_CODEMP = CODEMP ' +
+                                      '   AND USU_CODPRO = CODPRO ' +
+                                      '   AND USU_CODEMP = :pCodEmp ' +
                                       '   AND USU_DATSAI = :pDatSai ' +
                                       '   AND USU_USUSAI = :pUsuSai ' +
-                                      '   AND USU_CXAENV = ' + QuotedStr('N');
+                                      '   AND USU_CXAENV = ' + QuotedStr('N') +
+                                      ' ORDER BY USU_NUMCXA';
               SQLDSGrid.Params.ParamByName('pCodEmp').AsInteger:= vnCodEmp;
               SQLDSGrid.Params.ParamByName('pDatSai').AsString := vaDatSai;
               SQLDSGrid.Params.ParamByName('pUsuSai').AsInteger:= UVarUni.TClass.vnNumCad;
               SQLDSGrid.Open;
-
+              vnCont:= 0;
               Try
                 LVGrid.Columns.Clear;
                 LVGrid.Items.Clear;
@@ -273,6 +275,7 @@ begin
                   for i := 1 to pred(SQLDSGrid.Fields.Count) do
                     it.SubItems.Append(SQLDSGrid.Fields[i].AsString);
                   SQLDSGrid.Next;
+                  vnCont:= vnCont + 1;
                 end;
               finally
                 SQLDSGrid.Close;
@@ -320,33 +323,35 @@ begin
               SQLQMonCai.ParamByName('pUsuEnt').AsInteger:= UVarUni.TClass.vnNumCad;
               SQLQMonCai.ParamByName('pCxaRec').AsString := 'N';
               SQLQMonCai.ExecSQL();
-              vnCont:= vnCont + 1;
-              {vaMsg:= 'Registro de Entrada de ' + Char(13) + 'Caixa Realizado com Sucesso!';
-              MessageDlg(vaMsg, mtInformation, [mbOk], 0);}
 
               LVGrid.ViewStyle := vsReport;
-              SQLDSGrid.CommandText:= 'SELECT USU_CODEMP AS "EMPRESA", ' +
-                                      '       USU_CODFIL AS "FILIAL", ' +
-                                      '       USU_CODORI AS "ORIGEM", ' +
-                                      '       USU_NUMORP AS "ORDEM PROD.", ' +
-                                      '       USU_PERPRO AS "PERÍODO PROD.", ' +
+              SQLDSGrid.CommandText:= 'SELECT USU_NUMCXA AS "CAIXA", ' +
+                                      '       DESPRO AS "DESCRIÇÃO PROD.",' +
                                       '       USU_CODPRO AS "PRODUTO", ' +
                                       '       USU_CODDER AS "DERIVAÇÃO", ' +
-                                      '       USU_NUMCXA AS "CAIXA", ' +
+                                      '       USU_PERPRO AS "PERÍODO PROD.", ' +
                                       '       USU_CODMNF AS "MINI FABRICA", ' +
                                       '       USU_DATENT AS "DATA ENTRADA", ' +
                                       '       USU_HORENT AS "HORA ENTRADA", ' +
-                                      '       USU_USUENT AS "USUÁRIO ENTRADA"' +
-                                      '  FROM USU_TMONCAI ' +
-                                      ' WHERE USU_CODEMP = :pCodEmp ' +
+                                      '       USU_USUENT AS "USUÁRIO ENTRADA", ' +
+                                      '       USU_CODEMP AS "EMPRESA", ' +
+                                      '       USU_CODFIL AS "FILIAL", ' +
+                                      '       USU_CODORI AS "ORIGEM", ' +
+                                      '       USU_NUMORP AS "ORDEM PROD." ' +
+                                      '  FROM USU_TMONCAI, ' +
+                                      '       E075PRO ' +
+                                      ' WHERE USU_CODEMP = CODEMP ' +
+                                      '   AND USU_CODPRO = CODPRO ' +
+                                      '   AND USU_CODEMP = :pCodEmp ' +
                                       '   AND USU_DATENT = :pDatEnt ' +
                                       '   AND USU_USUENT = :pUsuEnt ' +
-                                      '   AND USU_CXAREC = ' + QuotedStr('N');
+                                      '   AND USU_CXAREC = ' + QuotedStr('N') +
+                                      ' ORDER BY USU_NUMCXA';;
               SQLDSGrid.Params.ParamByName('pCodEmp').AsInteger:= vnCodEmp;
               SQLDSGrid.Params.ParamByName('pDatEnt').AsString := FormatDateTime('DD/MM/YYYY', Now);
               SQLDSGrid.Params.ParamByName('pUsuEnt').AsInteger:= UVarUni.TClass.vnNumCad;
               SQLDSGrid.Open;
-
+              vnCont:= 0;
               Try
                 LVGrid.Columns.Clear;
                 LVGrid.Items.Clear;
@@ -362,6 +367,7 @@ begin
                   for i := 1 to pred(SQLDSGrid.Fields.Count) do
                     it.SubItems.Append(SQLDSGrid.Fields[i].AsString);
                   SQLDSGrid.Next;
+                  vnCont:= vnCont + 1;
                 end;
               finally
                 SQLDSGrid.Close;
@@ -401,6 +407,7 @@ var
   vaDesPro: String;
   vaEspaco: String;
   vnTam: Integer;
+  vaSaiEnt: String;
 begin
   if vnCodEmp = 0 then
     vnCodEmp:= 1;
@@ -433,15 +440,8 @@ begin
                       '   AND USU_DATSAI = :pDatSai ' +
                       '   AND USU_USUSAI = :pUsuSai ' +
                       '   AND USU_CXAENV <> ' + QuotedStr('S') + ' ' +
-                      'ORDER BY USU_CODEMP, ' +
-                      '         USU_CODFIL, ' +
-                      '         USU_CODORI, ' +
-                      '         USU_NUMORP, ' +
-                      '         USU_PERPRO, ' +
-                      '         USU_NUMCXA');
-    vaTexto:= 'Caixas enviadas: ' + Char(13) + Char(13) +
-              'EMPRESA FILIAL ORIGEM ORDEM PRD. PERÍODO PRD. PRODUTO                                                              ' +
-              '                          DERIVAÇÃO CAIXA MINI FABRICA DATA SAÍDA HORA SAÍDA OPERADOR SAÍDA';
+                      'ORDER BY USU_NUMCXA');
+    vaTexto:= 'Caixas enviadas';
   end
   else
   begin
@@ -470,15 +470,8 @@ begin
                       '   AND USU_DATENT = :pDatSai ' +
                       '   AND USU_USUENT = :pUsuSai ' +
                       '   AND USU_CXAREC <> ' + QuotedStr('S') + ' ' +
-                      'ORDER BY USU_CODEMP, ' +
-                      '         USU_CODFIL, ' +
-                      '         USU_CODORI, ' +
-                      '         USU_NUMORP, ' +
-                      '         USU_PERPRO, ' +
-                      '         USU_NUMCXA');
-    vaTexto:= 'Caixas Recebidas: ' + Char(13) + Char(13) +
-              'EMPRESA FILIAL ORIGEM ORDEM PRD. PERÍODO PRD. PRODUTO                                                                ' +
-              '                          DERIVAÇÃO CAIXA MINI FABRICA DATA ENTRADA HORA ENTRADA OPERADOR ENTRADA';
+                      'ORDER BY USU_NUMCXA');
+    vaTexto:= 'Caixas Recebidas';
   end;
   SQLQEmail.ParamByName('pCodEmp').AsInteger:= vnCodEmp;
   SQLQEmail.Params.ParamByName('pDatSai').AsString := FormatDateTime('DD/MM/YYYY', Now);
@@ -489,45 +482,32 @@ begin
   vaCaixas:= '';
   while Not(SQLQEmail.Eof) do
   begin
-    vaDesPro:= SQLQEmail.FieldByName('DESPRO').AsString;
-    vnTam:= Length(vaDesPro);
-    While vnTam <= 44 do
-    begin
-      vaEspaco:= vaEspaco + ' ';
-      vnTam:= vnTam + 1;
-    end;
-    vaDesPro:= SQLQEmail.FieldByName('DESPRO').AsString + vaEspaco;
-
     if (UVarUni.TClass.vaPodSai = 'S') then
-      vaCaixas:= vaCaixas + IntToStr(SQLQEmail.FieldByName('USU_CODEMP').AsInteger) + '              ' +
-                 IntToStr(SQLQEmail.FieldByName('USU_CODFIL').AsInteger) + '         ' +
-                 SQLQEmail.FieldByName('USU_CODORI').AsString + '          ' +
-                 IntToStr(SQLQEmail.FieldByName('USU_NUMORP').AsInteger) + '              ' +
-                 IntToStr(SQLQEmail.FieldByName('USU_PERPRO').AsInteger) + '            ' +
-                 SQLQEmail.FieldByName('USU_CODPRO').AsString + ' - ' +
-                 vaDesPro +
-                 SQLQEmail.FieldByName('USU_CODDER').AsString + '             ' +
-                 IntToStr(SQLQEmail.FieldByName('USU_NUMCXA').AsInteger) + '         ' +
-                 IntToStr(SQLQEmail.FieldByName('USU_CODMNF').AsInteger) + '                     ' +
-                 SQLQEmail.FieldByName('USU_DATSAI').AsString + '   ' +
-                 SQLQEmail.FieldByName('USU_HORSAI').AsString + '             ' +
-                 IntToStr(SQLQEmail.FieldByName('USU_USUSAI').AsInteger) + ' - ' +
-                 UpperCase(SQLQEmail.FieldByName('NOMOPE').AsString) + Char(13)
+      vaCaixas:= vaCaixas + '<td>' + IntToStr(SQLQEmail.FieldByName('USU_CODEMP').AsInteger) + '</td>' +
+                 '<td>' + IntToStr(SQLQEmail.FieldByName('USU_CODFIL').AsInteger) + '</td>' +
+                 '<td>' + SQLQEmail.FieldByName('USU_CODORI').AsString + '</td>' +
+                 '<td>' + IntToStr(SQLQEmail.FieldByName('USU_NUMORP').AsInteger) + '</td>' +
+                 '<td>' + IntToStr(SQLQEmail.FieldByName('USU_PERPRO').AsInteger) + '</td>' +
+                 '<td>' + SQLQEmail.FieldByName('USU_CODPRO').AsString + ' - ' + SQLQEmail.FieldByName('DESPRO').AsString + '</td>' +
+                 '<td>' + SQLQEmail.FieldByName('USU_CODDER').AsString + '</td>' +
+                 '<td>' + IntToStr(SQLQEmail.FieldByName('USU_NUMCXA').AsInteger) + '</td>' +
+                 '<td>' + IntToStr(SQLQEmail.FieldByName('USU_CODMNF').AsInteger) + '</td>' +
+                 '<td>' + SQLQEmail.FieldByName('USU_DATSAI').AsString + '</td>' +
+                 '<td>' + SQLQEmail.FieldByName('USU_HORSAI').AsString + '</td>' +
+                 '<td>' + IntToStr(SQLQEmail.FieldByName('USU_USUSAI').AsInteger) + ' - ' + UpperCase(SQLQEmail.FieldByName('NOMOPE').AsString) + '</td></tr>'
     else
-      vaCaixas:= vaCaixas + IntToStr(SQLQEmail.FieldByName('USU_CODEMP').AsInteger) + '              ' +
-                 IntToStr(SQLQEmail.FieldByName('USU_CODFIL').AsInteger) + '         ' +
-                 SQLQEmail.FieldByName('USU_CODORI').AsString + '          ' +
-                 IntToStr(SQLQEmail.FieldByName('USU_NUMORP').AsInteger) + '              ' +
-                 IntToStr(SQLQEmail.FieldByName('USU_PERPRO').AsInteger) + '            ' +
-                 SQLQEmail.FieldByName('USU_CODPRO').AsString + ' - ' +
-                 vaDesPro +
-                 SQLQEmail.FieldByName('USU_CODDER').AsString + '             ' +
-                 IntToStr(SQLQEmail.FieldByName('USU_NUMCXA').AsInteger) + '         ' +
-                 IntToStr(SQLQEmail.FieldByName('USU_CODMNF').AsInteger) + '                     ' +
-                 SQLQEmail.FieldByName('USU_DATENT').AsString + '       ' +
-                 SQLQEmail.FieldByName('USU_HORENT').AsString + '                   ' +
-                 IntToStr(SQLQEmail.FieldByName('USU_USUENT').AsInteger) + ' - ' +
-                 UpperCase(SQLQEmail.FieldByName('NOMOPE').AsString) + Char(13);
+      vaCaixas:= vaCaixas + '<td>' + IntToStr(SQLQEmail.FieldByName('USU_CODEMP').AsInteger) + '</td>' +
+                 '<td>' + IntToStr(SQLQEmail.FieldByName('USU_CODFIL').AsInteger) + '</td>' +
+                 '<td>' + SQLQEmail.FieldByName('USU_CODORI').AsString + '</td>' +
+                 '<td>' + IntToStr(SQLQEmail.FieldByName('USU_NUMORP').AsInteger) + '</td>' +
+                 '<td>' + IntToStr(SQLQEmail.FieldByName('USU_PERPRO').AsInteger) + '</td>' +
+                 '<td>' + SQLQEmail.FieldByName('USU_CODPRO').AsString + ' - ' + SQLQEmail.FieldByName('DESPRO').AsString + '</td>' +
+                 '<td>' + SQLQEmail.FieldByName('USU_CODDER').AsString + '</td>' +
+                 '<td>' + IntToStr(SQLQEmail.FieldByName('USU_NUMCXA').AsInteger) + '</td>' +
+                 '<td>' + IntToStr(SQLQEmail.FieldByName('USU_CODMNF').AsInteger) + '</td>' +
+                 '<td>' + SQLQEmail.FieldByName('USU_DATENT').AsString + '</td>' +
+                 '<td>' + SQLQEmail.FieldByName('USU_HORENT').AsString + '</td>' +
+                 '<td>' + IntToStr(SQLQEmail.FieldByName('USU_USUENT').AsInteger) + ' - ' + UpperCase(SQLQEmail.FieldByName('NOMOPE').AsString) + '</td></tr>';
     SQLQEmail.Next;
   end;
   SQLQEmail.Close;
@@ -545,10 +525,42 @@ begin
         IdMessage.Subject:= 'Caixas enviadas de Araucária - ' + FormatDateTime('DD/MM/YYYY HH:MM', Now)
       else
         IdMessage.Subject:= 'Caixas Recebidas no Portão - ' + FormatDateTime('DD/MM/YYYY HH:MM', Now);
-      IdMessage.ContentType:= 'multipart/mixed';
+      IdMessage.ContentType:= 'text/html';
+      IdMessage.CharSet:= 'ISO-8859-1';
       IdMessage.Recipients.EMailAddresses:= 'monitoramento.caixa@tortugaonline.com.br';
-      IdMessage.Body.Text:= vaTexto + Char(13) + vaCaixas;
-
+      //IdMessage.Recipients.EMailAddresses:= 'luciano.santos@tortugaonline.com.br;gilson.rodrigo@tortugaonline.com.br';
+      IdMessage.Body.Text:= '<html>' +
+                            '<head><title>' + vaTexto + '</title></head>' +
+                            '<body>' +
+                            '<p>Prezado(a),</p>' +
+                            '<p>Segue a tabela com os dados:</p>' +
+                            '<table border="1">' +
+                            '<tr><th>EMPRESA</th>' +
+                            '<th>FILIAL</th>' +
+                            '<th>ORIGEM</th>' +
+                            '<th>ORDEM PRD.</th>' +
+                            '<th>PERÍODO PROD.</th>' +
+                            '<th>PRODUTO</th>' +
+                            '<th>DERIVAÇÃO</th>' +
+                            '<th>CAIXA</th>' +
+                            '<th>MINI FABRICA</th>';
+      vaSaiEnt:= '';
+      if (UVarUni.TClass.vaPodSai = 'S') then
+      begin
+        vaSaiEnt:= '<th>DATA SAÍDA</th>' +
+                   '<th>HORA SAÍDA</th>' +
+                   '<th>OPERADOR SAÍDA</th>' + '</tr>';
+      end
+      else begin
+        vaSaiEnt:= '<th>DATA ENTRADA</th>' +
+                   '<th>HORA ENTRADA</th>' +
+                   '<th>OPERADOR ENTRADA</th>' + '</tr>';
+      end;
+      IdMessage.Body.Text:= IdMessage.Body.Text + vaSaiEnt +
+                            vaCaixas +
+                            '</table>' +
+                            '</body>' +
+                            '</html>';
       if not IdSMTP.Connected then
         IdSMTP.Connect();
       try
