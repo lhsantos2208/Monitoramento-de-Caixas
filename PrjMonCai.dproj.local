@@ -15,4 +15,5 @@
     <Transaction>2025/06/18 14:11:14.000.315,=C:\Users\luciano.santos\Documents\Embarcadero\Studio\Projects\Monitoramento de Caixa\Unit1.pas</Transaction>
     <Transaction>2025/06/18 14:11:37.000.033,C:\Users\luciano.santos\Documents\Embarcadero\Studio\Projects\Monitoramento de Caixa\Unit1.pas=C:\Users\luciano.santos\Documents\Embarcadero\Studio\Projects\Monitoramento de Caixa\UVarUni.pas</Transaction>
   </Transactions>
+	<BT_BuildType>AppStore</BT_BuildType>
 </BorlandProject>

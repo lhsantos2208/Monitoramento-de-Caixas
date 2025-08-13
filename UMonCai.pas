@@ -408,6 +408,7 @@ var
   vaEspaco: String;
   vnTam: Integer;
   vaSaiEnt: String;
+  vnNumCxa: Integer;
 begin
   if vnCodEmp = 0 then
     vnCodEmp:= 1;
@@ -480,6 +481,7 @@ begin
   SQLQEmail.Active:= True;
 
   vaCaixas:= '';
+  vnNumCxa:= 0;
   while Not(SQLQEmail.Eof) do
   begin
     if (UVarUni.TClass.vaPodSai = 'S') then
@@ -508,6 +510,7 @@ begin
                  '<td>' + SQLQEmail.FieldByName('USU_DATENT').AsString + '</td>' +
                  '<td>' + SQLQEmail.FieldByName('USU_HORENT').AsString + '</td>' +
                  '<td>' + IntToStr(SQLQEmail.FieldByName('USU_USUENT').AsInteger) + ' - ' + UpperCase(SQLQEmail.FieldByName('NOMOPE').AsString) + '</td></tr>';
+    vnNumCxa:= vnNumCxa + 1;
     SQLQEmail.Next;
   end;
   SQLQEmail.Close;
@@ -533,7 +536,7 @@ begin
                             '<head><title>' + vaTexto + '</title></head>' +
                             '<body>' +
                             '<p>Prezado(a),</p>' +
-                            '<p>Segue a tabela com os dados:</p>' +
+                            '<p>Segue a tabela com os dados - Total de Caixas: ' + IntToStr(vnNumCxa) + '</p>' +
                             '<table border="1">' +
                             '<tr><th>EMPRESA</th>' +
                             '<th>FILIAL</th>' +
