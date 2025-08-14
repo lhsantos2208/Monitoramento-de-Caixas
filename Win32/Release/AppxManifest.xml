@@ -6,7 +6,7 @@
   <Identity Name="%projectName%"
 	ProcessorArchitecture="x86"
 			Publisher=""
-			Version="1.0.0.0" />
+			Version="1.0.1.1" />
   <Properties>
     <DisplayName>%packageDisplayName%</DisplayName>
     <PublisherDisplayName>%publisherDisplayName%</PublisherDisplayName>
