@@ -2,7 +2,7 @@ object FrmMonCai: TFrmMonCai
   Left = 0
   Top = 0
   BorderIcons = [biSystemMenu, biMinimize]
-  Caption = 'Monitoramento de Caixa Sa'#237'da e Entrada'
+  Caption = 'Monit. Caixa Sa'#237'da e Entrada 1.03'
   ClientHeight = 299
   ClientWidth = 328
   Color = clWhite

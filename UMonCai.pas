@@ -163,7 +163,9 @@ begin
         SQLQMonCai.Active:= False;
         vaSql:= 'SELECT USU_NUMORP, ' +
                 '       USU_USUSAI, ' +
-                '       USU_USUENT ' +
+                '       USU_USUENT, ' +
+                '       USU_CXAENV, ' +
+                '       USU_CXAREC ' +
                 '  FROM USU_TMONCAI ' +
                 ' WHERE USU_CODEMP = :pCodEmp ' +
                 '   AND USU_CODFIL = :pCodFil ' +
@@ -298,87 +300,94 @@ begin
         else begin
           if (UVarUni.TClass.vaPodEnt = 'S') then
           begin
-            if (SQLQMonCai.FieldByName('USU_USUENT').AsInteger = 0) then
+            if (SQLQMonCai.FieldByName('USU_CXAENV').AsString = 'S') then
             begin
-              SQLQMonCai.Active:= False;
-              vaSql:= 'UPDATE USU_TMONCAI ' +
-                      '   SET USU_DATENT = :pDatEnt, ' +
-                      '       USU_HORENT = :pHorEnt, ' +
-                      '       USU_USUENT = :pUsuEnt, ' +
-                      '       USU_CXAREC = :pCxaRec ' +
-                      ' WHERE USU_CODEMP = :pCodEmp ' +
-                      '   AND USU_CODFIL = :pCodFil ' +
-                      '   AND USU_CODORI = :pCodOri ' +
-                      '   AND USU_NUMORP = :pNumOrp ' +
-                      '   AND USU_NUMCXA = :pNumCxa';
-              SQLQMonCai.SQL.Clear;
-              SQLQMonCai.SQL.Add(vaSql);
-              SQLQMonCai.ParamByName('pCodEmp').AsInteger:= vnCodEmp;
-              SQLQMonCai.ParamByName('pCodFil').AsInteger:= vnCodFil;
-              SQLQMonCai.ParamByName('pCodOri').AsString := vaCodOri;
-              SQLQMonCai.ParamByName('pNumOrp').AsInteger:= vnNumOrp;
-              SQLQMonCai.ParamByName('pNumCxa').AsInteger:= StrToInt(vaNumCai);
-              SQLQMonCai.ParamByName('pDatEnt').AsString := FormatDateTime('DD/MM/YYYY', Now);
-              SQLQMonCai.ParamByName('pHorEnt').AsString := FormatDateTime('HH:MM', Now);
-              SQLQMonCai.ParamByName('pUsuEnt').AsInteger:= UVarUni.TClass.vnNumCad;
-              SQLQMonCai.ParamByName('pCxaRec').AsString := 'N';
-              SQLQMonCai.ExecSQL();
+              if (SQLQMonCai.FieldByName('USU_USUENT').AsInteger = 0) then
+              begin
+                SQLQMonCai.Active:= False;
+                vaSql:= 'UPDATE USU_TMONCAI ' +
+                        '   SET USU_DATENT = :pDatEnt, ' +
+                        '       USU_HORENT = :pHorEnt, ' +
+                        '       USU_USUENT = :pUsuEnt, ' +
+                        '       USU_CXAREC = :pCxaRec ' +
+                        ' WHERE USU_CODEMP = :pCodEmp ' +
+                        '   AND USU_CODFIL = :pCodFil ' +
+                        '   AND USU_CODORI = :pCodOri ' +
+                        '   AND USU_NUMORP = :pNumOrp ' +
+                        '   AND USU_NUMCXA = :pNumCxa';
+                SQLQMonCai.SQL.Clear;
+                SQLQMonCai.SQL.Add(vaSql);
+                SQLQMonCai.ParamByName('pCodEmp').AsInteger:= vnCodEmp;
+                SQLQMonCai.ParamByName('pCodFil').AsInteger:= vnCodFil;
+                SQLQMonCai.ParamByName('pCodOri').AsString := vaCodOri;
+                SQLQMonCai.ParamByName('pNumOrp').AsInteger:= vnNumOrp;
+                SQLQMonCai.ParamByName('pNumCxa').AsInteger:= StrToInt(vaNumCai);
+                SQLQMonCai.ParamByName('pDatEnt').AsString := FormatDateTime('DD/MM/YYYY', Now);
+                SQLQMonCai.ParamByName('pHorEnt').AsString := FormatDateTime('HH:MM', Now);
+                SQLQMonCai.ParamByName('pUsuEnt').AsInteger:= UVarUni.TClass.vnNumCad;
+                SQLQMonCai.ParamByName('pCxaRec').AsString := 'N';
+                SQLQMonCai.ExecSQL();
 
-              LVGrid.ViewStyle := vsReport;
-              SQLDSGrid.CommandText:= 'SELECT USU_NUMCXA AS "CAIXA", ' +
-                                      '       DESPRO AS "DESCRIÇÃO PROD.",' +
-                                      '       USU_CODPRO AS "PRODUTO", ' +
-                                      '       USU_CODDER AS "DERIVAÇÃO", ' +
-                                      '       USU_PERPRO AS "PERÍODO PROD.", ' +
-                                      '       USU_CODMNF AS "MINI FABRICA", ' +
-                                      '       USU_DATENT AS "DATA ENTRADA", ' +
-                                      '       USU_HORENT AS "HORA ENTRADA", ' +
-                                      '       USU_USUENT AS "USUÁRIO ENTRADA", ' +
-                                      '       USU_CODEMP AS "EMPRESA", ' +
-                                      '       USU_CODFIL AS "FILIAL", ' +
-                                      '       USU_CODORI AS "ORIGEM", ' +
-                                      '       USU_NUMORP AS "ORDEM PROD." ' +
-                                      '  FROM USU_TMONCAI, ' +
-                                      '       E075PRO ' +
-                                      ' WHERE USU_CODEMP = CODEMP ' +
-                                      '   AND USU_CODPRO = CODPRO ' +
-                                      '   AND USU_CODEMP = :pCodEmp ' +
-                                      '   AND USU_DATENT = :pDatEnt ' +
-                                      '   AND USU_USUENT = :pUsuEnt ' +
-                                      '   AND USU_CXAREC = ' + QuotedStr('N') +
-                                      ' ORDER BY USU_NUMCXA';;
-              SQLDSGrid.Params.ParamByName('pCodEmp').AsInteger:= vnCodEmp;
-              SQLDSGrid.Params.ParamByName('pDatEnt').AsString := FormatDateTime('DD/MM/YYYY', Now);
-              SQLDSGrid.Params.ParamByName('pUsuEnt').AsInteger:= UVarUni.TClass.vnNumCad;
-              SQLDSGrid.Open;
-              vnCont:= 0;
-              Try
-                LVGrid.Columns.Clear;
-                LVGrid.Items.Clear;
-                for i := 0 to pred(SQLDSGrid.Fields.Count) do
-                begin
-                  with LVGrid.Columns.Add do
-                    Caption := SQLDSGrid.Fields[i].FieldName;
+                LVGrid.ViewStyle := vsReport;
+                SQLDSGrid.CommandText:= 'SELECT USU_NUMCXA AS "CAIXA", ' +
+                                        '       DESPRO AS "DESCRIÇÃO PROD.",' +
+                                        '       USU_CODPRO AS "PRODUTO", ' +
+                                        '       USU_CODDER AS "DERIVAÇÃO", ' +
+                                        '       USU_PERPRO AS "PERÍODO PROD.", ' +
+                                        '       USU_CODMNF AS "MINI FABRICA", ' +
+                                        '       USU_DATENT AS "DATA ENTRADA", ' +
+                                        '       USU_HORENT AS "HORA ENTRADA", ' +
+                                        '       USU_USUENT AS "USUÁRIO ENTRADA", ' +
+                                        '       USU_CODEMP AS "EMPRESA", ' +
+                                        '       USU_CODFIL AS "FILIAL", ' +
+                                        '       USU_CODORI AS "ORIGEM", ' +
+                                        '       USU_NUMORP AS "ORDEM PROD." ' +
+                                        '  FROM USU_TMONCAI, ' +
+                                        '       E075PRO ' +
+                                        ' WHERE USU_CODEMP = CODEMP ' +
+                                        '   AND USU_CODPRO = CODPRO ' +
+                                        '   AND USU_CODEMP = :pCodEmp ' +
+                                        '   AND USU_DATENT = :pDatEnt ' +
+                                        '   AND USU_USUENT = :pUsuEnt ' +
+                                        '   AND USU_CXAREC = ' + QuotedStr('N') +
+                                        ' ORDER BY USU_NUMCXA';;
+                SQLDSGrid.Params.ParamByName('pCodEmp').AsInteger:= vnCodEmp;
+                SQLDSGrid.Params.ParamByName('pDatEnt').AsString := FormatDateTime('DD/MM/YYYY', Now);
+                SQLDSGrid.Params.ParamByName('pUsuEnt').AsInteger:= UVarUni.TClass.vnNumCad;
+                SQLDSGrid.Open;
+                vnCont:= 0;
+                Try
+                  LVGrid.Columns.Clear;
+                  LVGrid.Items.Clear;
+                  for i := 0 to pred(SQLDSGrid.Fields.Count) do
+                  begin
+                    with LVGrid.Columns.Add do
+                      Caption := SQLDSGrid.Fields[i].FieldName;
+                  end;
+                  while not SQLDSGrid.Eof do
+                  begin
+                    it:= LVGrid.Items.Add;
+                    it.Caption:= SQLDSGrid.Fields[0].AsString;
+                    for i := 1 to pred(SQLDSGrid.Fields.Count) do
+                      it.SubItems.Append(SQLDSGrid.Fields[i].AsString);
+                    SQLDSGrid.Next;
+                    vnCont:= vnCont + 1;
+                  end;
+                finally
+                  SQLDSGrid.Close;
                 end;
-                while not SQLDSGrid.Eof do
-                begin
-                  it:= LVGrid.Items.Add;
-                  it.Caption:= SQLDSGrid.Fields[0].AsString;
-                  for i := 1 to pred(SQLDSGrid.Fields.Count) do
-                    it.SubItems.Append(SQLDSGrid.Fields[i].AsString);
-                  SQLDSGrid.Next;
-                  vnCont:= vnCont + 1;
-                end;
-              finally
-                SQLDSGrid.Close;
+
+                ECodBar.Clear;
+                ECodBar.SetFocus;
+                LCont.Caption:= IntToStr(vnCont);
+              end
+              else begin
+                vaMsg:= 'Já Existe Entrada para a Caixa!';
+                MessageDlg(vaMsg, mtError, [mbOk], 0);
               end;
-
-              ECodBar.Clear;
-              ECodBar.SetFocus;
-              LCont.Caption:= IntToStr(vnCont);
             end
             else begin
-              vaMsg:= 'Já Existe Entrada para a Caixa!';
+              vaMsg:= 'Não foi dado Saída para Caixa!';
               MessageDlg(vaMsg, mtError, [mbOk], 0);
             end;
           end
@@ -408,6 +417,7 @@ var
   vaEspaco: String;
   vnTam: Integer;
   vaSaiEnt: String;
+  vnNumCxa: Integer;
 begin
   if vnCodEmp = 0 then
     vnCodEmp:= 1;
@@ -480,6 +490,7 @@ begin
   SQLQEmail.Active:= True;
 
   vaCaixas:= '';
+  vnNumCxa:= 0;
   while Not(SQLQEmail.Eof) do
   begin
     if (UVarUni.TClass.vaPodSai = 'S') then
@@ -508,6 +519,7 @@ begin
                  '<td>' + SQLQEmail.FieldByName('USU_DATENT').AsString + '</td>' +
                  '<td>' + SQLQEmail.FieldByName('USU_HORENT').AsString + '</td>' +
                  '<td>' + IntToStr(SQLQEmail.FieldByName('USU_USUENT').AsInteger) + ' - ' + UpperCase(SQLQEmail.FieldByName('NOMOPE').AsString) + '</td></tr>';
+    vnNumCxa:= vnNumCxa + 1;
     SQLQEmail.Next;
   end;
   SQLQEmail.Close;
@@ -533,7 +545,7 @@ begin
                             '<head><title>' + vaTexto + '</title></head>' +
                             '<body>' +
                             '<p>Prezado(a),</p>' +
-                            '<p>Segue a tabela com os dados:</p>' +
+                            '<p>Segue a tabela com os dados - Total de Caixas: ' + IntToStr(vnNumCxa) + '</p>' +
                             '<table border="1">' +
                             '<tr><th>EMPRESA</th>' +
                             '<th>FILIAL</th>' +
